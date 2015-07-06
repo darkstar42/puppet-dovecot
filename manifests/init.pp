@@ -1,21 +1,36 @@
-# == Class: module
+# == Class: dovecot
 #
-# Full description of class module here.
+# This class provides a basic setup of dovecot
 #
 # === Parameters
 #
 # [*sample_parameter*]
 #   Explanation of what this parameter affects and what it defaults to.
 #
-class module (
-  $package_name = $::module::params::package_name,
-  $service_name = $::module::params::service_name,
-) inherits ::module::params {
+class dovecot (
+  $auth_mechanisms = 'plain login',
+  $log_timestamp = '%Y-%m-%d %H:%M%:S',
+  $protocols = 'imap',
+  $listen = '*',
+  $ssl_cert = undef,
+  $ssl_key = undef,
+  $mail_max_userip_connections = 10
 
-  # validate parameters here
+  $package_name = $::dovecot::params::package_name,
+  $service_name = $::dovecot::params::service_name,
+) inherits ::dovecot::params {
+  
+  validate_string($auth_mechanisms)
+  validate_string($log_timestamp)
+  validate_string($protocols)
+  validate_string($listen)
+  validate_string($ssl_cert)
+  validate_string($ssl_key)
+  validate_integer($mail_max_userip_connections)
 
-  class { '::module::install': } ->
-  class { '::module::config': } ~>
-  class { '::module::service': } ->
-  Class['::module']
+  class { '::dovecot::install': } ->
+  class { '::dovecot::config': } ~>
+  class { '::dovecot::service': } ->
+  Class['::dovecot']
 }
+

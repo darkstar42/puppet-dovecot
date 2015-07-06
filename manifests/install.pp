@@ -1,10 +1,9 @@
-# == Class module::install
+# == Class dovecot::install
 #
-# This class is called from module for install.
-#
-class module::install {
+class dovecot::install {
 
-  package { $::module::package_name:
+  package { $::dovecot::package_name:
     ensure => present,
   }
 }
+
